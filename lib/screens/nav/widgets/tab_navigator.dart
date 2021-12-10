@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_clone/blocs/auth/auth_bloc.dart';
 import 'package:insta_clone/config/custom_router.dart';
 import 'package:insta_clone/enums/enums.dart';
-import 'package:insta_clone/repositories/user/user_repository.dart';
+import 'package:insta_clone/repositories/post/post_repository.dart';
+import 'package:insta_clone/repositories/repositories.dart';
+import 'package:insta_clone/screens/create_post/cubit/create_post_cubit.dart';
 import 'package:insta_clone/screens/profile/bloc/profile_bloc.dart';
 import 'package:insta_clone/screens/screens.dart';
 
@@ -26,7 +28,7 @@ class TabNavigator extends StatelessWidget {
         return [
           MaterialPageRoute(
               builder: (context) => routeBuilders[initialRoute]!(context),
-              settings: RouteSettings(name: tabNavigatorRoot))
+              settings: const RouteSettings(name: tabNavigatorRoot))
         ];
       },
     );
@@ -39,11 +41,18 @@ class TabNavigator extends StatelessWidget {
   Widget _getScreen(BuildContext context, BottomNavItem item) {
     switch (item) {
       case BottomNavItem.feed:
-        return FeedScreen();
+        return const FeedScreen();
       case BottomNavItem.search:
-        return SearchScreen();
+        return const SearchScreen();
       case BottomNavItem.create:
-        return CreatePostsScreen();
+        return BlocProvider<CreatePostCubit>(
+          create: (context) => CreatePostCubit(
+            postRepository: context.read<PostRepository>(),
+            authBloc: context.read<AuthBloc>(),
+            storageRepository: context.read<StorageRepository>(),
+          ),
+          child: CreatePostsScreen(),
+        );
       case BottomNavItem.notifications:
         return NotificationsScreen();
       case BottomNavItem.profile:
