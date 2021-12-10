@@ -15,6 +15,19 @@ class CustomRouter {
         return LoginScreen.route();
       case NavScreen.routeName:
         return NavScreen.route();
+      case SignupScreen.routeName:
+        return SignupScreen.route();
+      default:
+        return _errorRoute();
+    }
+  }
+
+  static Route onGenerateNestedRoute(RouteSettings settings) {
+    print('Nested Route : ${settings.name}');
+    switch (settings.name) {
+      case EditProfileScreen.routeName:
+        return EditProfileScreen.route(
+            args: settings.arguments as EditProfileScreenArgs);
       default:
         return _errorRoute();
     }

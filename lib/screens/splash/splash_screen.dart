@@ -19,8 +19,6 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listenWhen: (prevState, state) => prevState.status != state.status,
       listener: (context, state) {
-        print(state);
-
         if (state.status == AuthStatus.unauthenticated) {
           // Go to Login Screen
           Navigator.of(context).pushNamed(LoginScreen.routeName);
