@@ -1,6 +1,6 @@
 # insta_clone
 
-A new Flutter project.
+Cloned backend and frontend of Instagram.
 
 ## Getting Started
 
