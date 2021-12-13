@@ -25,6 +25,9 @@ class CustomRouter {
   static Route onGenerateNestedRoute(RouteSettings settings) {
     print('Nested Route : ${settings.name}');
     switch (settings.name) {
+      case ProfileScreen.routeName:
+        return ProfileScreen.route(
+            args: settings.arguments as ProfileScreenArgs);
       case EditProfileScreen.routeName:
         return EditProfileScreen.route(
             args: settings.arguments as EditProfileScreenArgs);
