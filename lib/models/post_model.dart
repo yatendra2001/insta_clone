@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:insta_clone/config/paths.dart';
@@ -63,12 +61,11 @@ class Post extends Equatable {
     };
   }
 
-  static Future<Post?> fromDocument(DocumentSnapshot? doc) async {
-    if (doc == null) return null;
+  static Future<Post?> fromDocument(DocumentSnapshot doc) async {
     final data = doc.data() as Map<String, dynamic>;
-    final authRef = data['author'] as DocumentReference?;
-    if (authRef != null) {
-      final authorDoc = await authRef.get();
+    final authorRef = data['author'] as DocumentReference?;
+    if (authorRef != null) {
+      final authorDoc = await authorRef.get();
       if (authorDoc.exists) {
         return Post(
           id: doc.id,
