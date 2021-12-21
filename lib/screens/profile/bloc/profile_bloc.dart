@@ -97,7 +97,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } catch (error) {
       yield state.copyWith(
         status: ProfileStatus.error,
-        failure: FailureModel(message: 'Something went wrong!'),
+        failure: const FailureModel(message: 'Something went wrong!'),
       );
     }
   }
@@ -112,7 +112,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } catch (error) {
       yield state.copyWith(
         status: ProfileStatus.error,
-        failure: FailureModel(message: 'Something went wrong!'),
+        failure: const FailureModel(message: 'Something went wrong!'),
       );
     }
   }
