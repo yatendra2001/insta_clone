@@ -33,7 +33,10 @@ class UserRepository extends BaseUserRepository {
   }
 
   @override
-  void followUser({required String userId, required String followUserId}) {
+  void followUser({
+    required String userId,
+    required String followUserId,
+  }) {
     // Add followUser to user's userFollowing.
     _firebaseFirestore
         .collection(Paths.following)
@@ -41,8 +44,7 @@ class UserRepository extends BaseUserRepository {
         .collection(Paths.userFollowing)
         .doc(followUserId)
         .set({});
-
-    // Add user to follower's userFollowers.
+    // Add user to followUser's userFollowers.
     _firebaseFirestore
         .collection(Paths.followers)
         .doc(followUserId)
@@ -52,7 +54,10 @@ class UserRepository extends BaseUserRepository {
   }
 
   @override
-  void unfollowUser({required String userId, required String unfollowUserId}) {
+  void unfollowUser({
+    required String userId,
+    required String unfollowUserId,
+  }) {
     // Remove unfollowUser from user's userFollowing.
     _firebaseFirestore
         .collection(Paths.following)
@@ -60,7 +65,7 @@ class UserRepository extends BaseUserRepository {
         .collection(Paths.userFollowing)
         .doc(unfollowUserId)
         .delete();
-    // Remove user from userFollower's userFollowers
+    // Remove user from unfollowUser's userFollowers.
     _firebaseFirestore
         .collection(Paths.followers)
         .doc(unfollowUserId)
@@ -70,8 +75,10 @@ class UserRepository extends BaseUserRepository {
   }
 
   @override
-  Future<bool> isFollowing(
-      {required String userId, required String otherUserId}) async {
+  Future<bool> isFollowing({
+    required String userId,
+    required String otherUserId,
+  }) async {
     // is otherUser in user's userFollowing
     final otherUserDoc = await _firebaseFirestore
         .collection(Paths.following)
