@@ -6,6 +6,7 @@ import 'package:insta_clone/enums/enums.dart';
 import 'package:insta_clone/repositories/post/post_repository.dart';
 import 'package:insta_clone/repositories/repositories.dart';
 import 'package:insta_clone/screens/create_post/cubit/create_post_cubit.dart';
+import 'package:insta_clone/screens/feed/bloc/feed_bloc.dart';
 import 'package:insta_clone/screens/profile/bloc/profile_bloc.dart';
 import 'package:insta_clone/screens/screens.dart';
 import 'package:insta_clone/screens/search/cubit/search_cubit.dart';
@@ -42,7 +43,13 @@ class TabNavigator extends StatelessWidget {
   Widget _getScreen(BuildContext context, BottomNavItem item) {
     switch (item) {
       case BottomNavItem.feed:
-        return const FeedScreen();
+        return BlocProvider<FeedBloc>(
+          create: (context) => FeedBloc(
+            postRepository: context.read<PostRepository>(),
+            authBloc: context.read<AuthBloc>(),
+          )..add(FeedFetchPosts()),
+          child: const FeedScreen(),
+        );
       case BottomNavItem.search:
         return BlocProvider<SearchCubit>(
           create: (context) =>
