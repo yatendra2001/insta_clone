@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_clone/blocs/auth/auth_bloc.dart';
+import 'package:insta_clone/cubits/liked_posts/liked_posts_cubit.dart';
 import 'package:insta_clone/repositories/post/post_repository.dart';
 import 'package:insta_clone/repositories/user/user_repository.dart';
 import 'package:insta_clone/screens/profile/bloc/profile_bloc.dart';
@@ -26,10 +27,11 @@ class ProfileScreen extends StatefulWidget {
           userRepository: context.read<UserRepository>(),
           authBloc: context.read<AuthBloc>(),
           postRepository: context.read<PostRepository>(),
+          likedPostsCubit: context.read<LikedPostsCubit>(),
         )..add(
             ProfileLoadUser(userId: args.userId),
           ),
-        child: ProfileScreen(),
+        child: const ProfileScreen(),
       ),
     );
   }
@@ -72,8 +74,10 @@ class _ProfileScreenState extends State<ProfileScreen>
               actions: [
                 if (state.isCurrentUser)
                   IconButton(
-                    onPressed: () =>
-                        context.read<AuthBloc>().add(AuthLogoutRequested()),
+                    onPressed: () {
+                      context.read<AuthBloc>().add(AuthLogoutRequested());
+                      context.read<LikedPostsCubit>().clearAllLikedPosts();
+                    },
                     icon: const Icon(Icons.exit_to_app),
                   ),
               ],
@@ -167,7 +171,25 @@ class _ProfileScreenState extends State<ProfileScreen>
                   : SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
                         final post = state.posts[index];
-                        return PostView(post: post!, isLiked: false);
+                        final likedPostsState =
+                            context.watch<LikedPostsCubit>().state;
+                        final isLiked =
+                            likedPostsState.likedPostIds.contains(post!.id);
+                        return PostView(
+                          post: post,
+                          isLiked: isLiked,
+                          onLike: () {
+                            if (isLiked) {
+                              context
+                                  .read<LikedPostsCubit>()
+                                  .unlikePost(post: post);
+                            } else {
+                              context
+                                  .read<LikedPostsCubit>()
+                                  .likePost(post: post);
+                            }
+                          },
+                        );
                       }, childCount: state.posts.length),
                     )
             ],

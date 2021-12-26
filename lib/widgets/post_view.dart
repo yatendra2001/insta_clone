@@ -9,10 +9,15 @@ import 'package:insta_clone/widgets/widgets.dart';
 class PostView extends StatelessWidget {
   final Post post;
   final bool isLiked;
+  final VoidCallback onLike;
+  final bool recentlyLiked;
+
   const PostView({
     Key? key,
     required this.post,
     required this.isLiked,
+    required this.onLike,
+    this.recentlyLiked = false,
   }) : super(key: key);
 
   @override
@@ -47,7 +52,7 @@ class PostView extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onDoubleTap: () {},
+          onDoubleTap: onLike,
           child: CachedNetworkImage(
               imageUrl: post.imageUrl,
               fit: BoxFit.cover,
@@ -57,7 +62,7 @@ class PostView extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: onLike,
               icon: isLiked
                   ? const Icon(Icons.favorite, color: Colors.pink)
                   : const Icon(Icons.favorite_outline),
@@ -74,7 +79,7 @@ class PostView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                '${post.likes} likes',
+                '${recentlyLiked ? post.likes + 1 : post.likes} likes',
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 4.0),

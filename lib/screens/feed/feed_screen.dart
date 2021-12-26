@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:insta_clone/cubits/liked_posts/liked_posts_cubit.dart';
 import 'package:insta_clone/screens/feed/bloc/feed_bloc.dart';
 import 'package:insta_clone/widgets/widgets.dart';
 
@@ -86,7 +87,22 @@ class _FeedScreenState extends State<FeedScreen> {
             itemCount: state.posts.length,
             itemBuilder: (BuildContext context, int index) {
               final post = state.posts[index];
-              return PostView(post: post!, isLiked: false);
+              final likedPostsState = context.watch<LikedPostsCubit>().state;
+              final isLiked = likedPostsState.likedPostIds.contains(post!.id);
+              final recentlyLiked =
+                  likedPostsState.recentlyLikedPostIds.contains(post.id);
+              return PostView(
+                post: post,
+                isLiked: isLiked,
+                recentlyLiked: recentlyLiked,
+                onLike: () {
+                  if (isLiked) {
+                    context.read<LikedPostsCubit>().unlikePost(post: post);
+                  } else {
+                    context.read<LikedPostsCubit>().likePost(post: post);
+                  }
+                },
+              );
             },
           ),
         );

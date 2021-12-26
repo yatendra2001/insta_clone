@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_clone/blocs/auth/auth_bloc.dart';
 import 'package:insta_clone/blocs/simple_bloc_observer.dart';
+import 'package:insta_clone/cubits/liked_posts/liked_posts_cubit.dart';
 import 'package:insta_clone/repositories/post/post_repository.dart';
 import 'package:insta_clone/repositories/repositories.dart';
 import 'package:insta_clone/screens/splash/splash_screen.dart';
@@ -39,6 +40,12 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 AuthBloc(authRepository: context.read<AuthRepository>()),
           ),
+          BlocProvider<LikedPostsCubit>(
+            create: (context) => LikedPostsCubit(
+              postRepository: context.read<PostRepository>(),
+              authBloc: context.read<AuthBloc>(),
+            ),
+          )
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
