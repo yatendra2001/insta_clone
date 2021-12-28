@@ -56,7 +56,7 @@ class PostRepository extends BasePostRepository {
         .collection(Paths.comments)
         .doc(postId)
         .collection(Paths.postComments)
-        .orderBy('date', descending: true)
+        .orderBy('date', descending: false)
         .snapshots()
         .map((snap) =>
             snap.docs.map((doc) => Comment.fromDocument(doc)).toList());

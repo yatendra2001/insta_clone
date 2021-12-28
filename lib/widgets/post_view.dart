@@ -68,7 +68,10 @@ class PostView extends StatelessWidget {
                   : const Icon(Icons.favorite_outline),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).pushNamed(
+                CommentsScreen.routeName,
+                arguments: CommentsScreenArgs(post: post),
+              ),
               icon: const Icon(Icons.comment_outlined),
             ),
           ],
