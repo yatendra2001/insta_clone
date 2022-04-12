@@ -13,7 +13,7 @@ With this project, I learned how to write production-level apps using standard p
 1. Clone the repository from GitHub:
 
 ```bash
-git clone https://github.com/pratikbaid3/Completionist_Flutter_App
+git clone https://github.com/yatendra2001/insta_clone.git
 ```
 
 2. Get all dependencies:
